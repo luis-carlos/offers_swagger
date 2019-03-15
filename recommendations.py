@@ -1,16 +1,18 @@
 import json
 import os
+import sys
 
 totalRecommendations = 0
 totalAccepts = 0
 totalClicks = 0
 totalAddsToCart = 0
 
-csv_file = "data/outcome/metrics-dedup.csv"
+csv_file = "data/outcome/metrics.csv"
 csv = open(csv_file, "a")
  
 #open the file
-with open('data/productTrends031519AM.json') as f:
+#with open('data/productTrends031519AM.json') as f:
+with open(sys.argv[1]) as f:
   data = json.load(f)
 
 #File headers
