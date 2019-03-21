@@ -32,10 +32,5 @@ if os.path.getsize(csv_file) == 0:
 for x, y in metrics.items():
     parseJSON(csv, data, x, y)
 
-##parseJSON(csv, data, "cntRecommendations", "Recommendations")
-##parseJSON(csv, data, "cntAccepts", "Accepts")
-##parseJSON(csv, data, "cntClicks", "Clicks")
-##parseJSON(csv, data, "cntAddsToCart", "Adds")
-
 csv.close()
 
