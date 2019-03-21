@@ -2,6 +2,13 @@ import json
 import os
 import sys
 
+metrics = {
+    "cntRecommendations": "Recommendations",
+    "cntAccepts":"Accepts",
+    "cntClicks":"Clicks",
+    "cntAddsToCart":"Adds"
+}
+
 csv_file = "data/outcome/metrics-dedup.csv"
 csv = open(csv_file, "a")
 
@@ -22,10 +29,13 @@ with open(sys.argv[1]) as f:
 if os.path.getsize(csv_file) == 0:
     csv.write("Timestamp,Metric,Count\n")
   
-parseJSON(csv, data, "cntRecommendations", "Recommendations")
-parseJSON(csv, data, "cntAccepts", "Accepts")
-parseJSON(csv, data, "cntClicks", "Clicks")
-parseJSON(csv, data, "cntAddsToCart", "Adds")
+for x, y in metrics.items():
+    parseJSON(csv, data, x, y)
+
+##parseJSON(csv, data, "cntRecommendations", "Recommendations")
+##parseJSON(csv, data, "cntAccepts", "Accepts")
+##parseJSON(csv, data, "cntClicks", "Clicks")
+##parseJSON(csv, data, "cntAddsToCart", "Adds")
 
 csv.close()
 
