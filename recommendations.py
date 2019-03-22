@@ -10,15 +10,15 @@ metrics = {
 }
 
 csv_file = "data/outcome/metrics.csv"
-csv_obj = open(csv_file, "a")
+csv = open(csv_file, "a")
 
 def parseJSON(csv, data, metricName, metricText):
     totalMetric = 0
     for day in data['productTrends']['ecom']['day1'][metricName]:
         totalMetric += day["v"]
         timestamp = str(day["n"])[5:7] + "/" + str(day["n"])[8:10] + "/" + str(day["n"])[:4] + str(day["n"])[10:]
-        row = timestamp  + "," + metricText +  "," + str(day["v"]) + "," + timestamp + metricText + "\n"      Muting writing for now
-        csv_obj.write(row)
+        row = timestamp  + "," + metricText +  "," + str(day["v"]) + "," + timestamp + metricText + "\n"
+        csv.write(row)
     print (str(totalMetric), metricText)
  
 #open the file
@@ -32,5 +32,5 @@ if os.path.getsize(csv_file) == 0:
 for x, y in metrics.items():
     parseJSON(csv_obj, data, x, y)
 
-csv_obj.close()
+csv.close()
 
