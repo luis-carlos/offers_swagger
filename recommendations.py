@@ -9,7 +9,7 @@ metrics = {
     "cntAddsToCart":"Adds"
 }
 
-csv_file = "data/outcome/metrics.csv"
+csv_file = "data/outcome/metrics-dedup.csv"
 csv = open(csv_file, "a")
 
 def parseJSON(csv, data, metricName, metricText):
