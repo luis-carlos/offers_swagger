@@ -30,7 +30,7 @@ if os.path.getsize(csv_file) == 0:
     csv.write("Timestamp,Metric,Count\n")
   
 for x, y in metrics.items():
-    parseJSON(csv_obj, data, x, y)
+    parseJSON(csv, data, x, y)
 
 csv.close()
 
