@@ -12,6 +12,13 @@ metrics = {
 csv_file = "data/outcome/metrics-dedup.csv"
 csv = open(csv_file, "a")
 
+def readRecords(fileName):
+    records = 0
+    with open(fileName) as f:
+        records = sum(1 for line in f)
+    f.close()
+    return records-1
+
 def parseJSON(csv, data, metricName, metricText):
     totalMetric = 0
     for day in data['productTrends']['ecom']['day1'][metricName]:
