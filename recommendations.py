@@ -3,9 +3,8 @@ import os
 import sys
 import glob
 
-source_file = sys.argv[1]
-customer = sys.argv[2]
-channel = sys.argv[3]
+customer = sys.argv[1]
+channel = sys.argv[2]
 
 metrics = {
     "cntRecommendations": "Recommendations",
