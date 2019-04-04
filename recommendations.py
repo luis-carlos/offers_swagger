@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import glob
 
 source_file = sys.argv[1]
 customer = sys.argv[2]
@@ -25,6 +26,11 @@ def parseJSON(csv, data, metricName, metricText, channel):
         csv.write(row)
     print (str(totalMetric), metricText)
  
+#Looking for source file
+files_path = "data\\" + customer + "\\*.json"
+myList = [f for f in glob.glob(files_path)]
+source_file = myList[0]
+
 #open the file
 with open(source_file) as f:
   data = json.load(f)
@@ -32,6 +38,8 @@ with open(source_file) as f:
 #File headers
 if os.path.getsize(csv_file) == 0:
     csv.write("Timestamp,Metric,Count\n")
+
+print("Source file: " + source_file)
   
 for x, y in metrics.items():
     parseJSON(csv, data, x, y, channel)
