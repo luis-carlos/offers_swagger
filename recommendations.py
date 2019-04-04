@@ -2,6 +2,10 @@ import json
 import os
 import sys
 
+source_file = sys.argv[1]
+customer = sys.argv[2]
+channel = sys.argv[3]
+
 metrics = {
     "cntRecommendations": "Recommendations",
     "cntAccepts":"Accepts",
@@ -9,7 +13,7 @@ metrics = {
     "cntAddsToCart":"Adds"
 }
 
-csv_file = "data/" + sys.argv[2] + "/outcome/metrics-dedup.csv"
+csv_file = "data/" + customer + "/outcome/metrics-dedup.csv"
 csv = open(csv_file, "a")
 
 def parseJSON(csv, data, metricName, metricText, channel):
@@ -22,7 +26,7 @@ def parseJSON(csv, data, metricName, metricText, channel):
     print (str(totalMetric), metricText)
  
 #open the file
-with open(sys.argv[1]) as f:
+with open(source_file) as f:
   data = json.load(f)
 
 #File headers
@@ -30,7 +34,14 @@ if os.path.getsize(csv_file) == 0:
     csv.write("Timestamp,Metric,Count\n")
   
 for x, y in metrics.items():
-    parseJSON(csv, data, x, y, sys.argv[3])
+    parseJSON(csv, data, x, y, channel)
+
+#Remove the source file
+if os.path.isfile(source_file):
+    os.remove(source_file)
+    print("File was removed successfully")
+else:
+    print("Error removing " + str(source_file) + " file")
 
 csv.close()
 
