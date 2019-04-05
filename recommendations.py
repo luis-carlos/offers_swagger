@@ -4,7 +4,7 @@ import sys
 import glob
 
 customer = sys.argv[1]
-channel = sys.argv[2]
+##channel = sys.argv[2]
 
 metrics = {
     "cntRecommendations": "Recommendations",
@@ -13,6 +13,7 @@ metrics = {
     "cntAddsToCart":"Adds"
 }
 
+preferences_file = "preferences.json"
 csv_file = "data/" + customer + "/outcome/metrics-dedup.csv"
 csv = open(csv_file, "a")
 
@@ -38,8 +39,13 @@ with open(source_file) as f:
 if os.path.getsize(csv_file) == 0:
     csv.write("Timestamp,Metric,Count\n")
 
+#Retrieve channel from JSON file
+with open(preferences_file) as f:
+    channel = json.load(f)
+channel = channel["preferences"]["customer"][customer]["channel"]
+
+#Writing to CSV file
 print("Source file: " + source_file)
-  
 for x, y in metrics.items():
     parseJSON(csv, data, x, y, channel)
 
