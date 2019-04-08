@@ -4,7 +4,6 @@ import sys
 import glob
 
 customer = sys.argv[1]
-##channel = sys.argv[2]
 
 metrics = {
     "cntRecommendations": "Recommendations",
