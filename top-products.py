@@ -1,15 +1,20 @@
 import sys
 import glob
 import json
+import os
+from datetime import date
 
 customer = sys.argv[1]
+preferences_file = "preferences.json"
 
 #Parse function
-def parseJSON(data):
+def parseJSON(data,limit):
     x = 0
     for product in data['products']:
-        if (x<25):
+        if (x<limit):
             print("-"*50)
+            print("Date: " + date.today().strftime("%m/%d/%y"))
+            print("Position: " + str(x+1))
             print(product['name'] + " (" + product['productId'] + ")")
             print("Recommendations: " + str(product['productAnalytics']['day1']['recommendations']))
             print("Clicks: " + str(product['productAnalytics']['day1']['clicks']))
@@ -17,8 +22,8 @@ def parseJSON(data):
             print("Accepts: " + str(product['productAnalytics']['day1']['accepts']))
         x += 1
         
-
-
+csv_file = "data/" + customer + "/outcome/top-products.csv"
+csv = open(csv_file, "a")
 
 #Looking for source file
 files_path = "data\\" + customer + "\\*.json"
@@ -29,5 +34,16 @@ source_file = myList[0]
 with open(source_file) as f:
   data = json.load(f)
 
-parseJSON(data)
+#File headers
+if os.path.getsize(csv_file) == 0:
+    csv.write("Date,Position,Product ID, Product Name, Recommendations, Clicks, Adds to Cart, Accepts\n")
+
+#Retrieve number of products from JSON file
+with open(preferences_file) as f:
+    limit = json.load(f)
+limit = limit["preferences"]["top-products"]["daily-amount"]        
+
+parseJSON(data, limit)
+
+csv.close()
 
