@@ -1,30 +1,30 @@
-import sys
 import glob
 import json
 import os
+from csv import writer
+from sys import argv
 from datetime import date
 
-customer = sys.argv[1]
+customer = argv[1]
 preferences_file = "preferences.json"
 
 #Parse function
 def parseJSON(data,limit):
-    x = 0
-    row = ""
+    row = []
     for idx, product in enumerate(data['products'][:limit], start=1):
-        row += str(date.today().strftime("%m/%d/%y") + ",") 
-        row += str(idx) + ","
-        row += str(product['productId']) + ","
-        row += str(product['name']) + ","
-        row += str(product['productAnalytics']['day1']['recommendations']) + ","
-        row += str(product['productAnalytics']['day1']['clicks']) + ","
-        row += str(product['productAnalytics']['day1']['cart']) + ","
-        row += str(product['productAnalytics']['day1']['accepts']) + "\n"
-        csv.write(row)
-        row=""
+        row.append(str(date.today().strftime("%m/%d/%y")))
+        row.append(str(idx))
+        row.append(str(product['productId']))
+        row.append(str(product['name']))
+        row.append(str(product['productAnalytics']['day1']['recommendations']))
+        row.append(str(product['productAnalytics']['day1']['clicks']))
+        row.append(str(product['productAnalytics']['day1']['cart']))
+        row.append(str(product['productAnalytics']['day1']['accepts']))
+        csv_object.writerow(row)
+        row = []
                 
 csv_file = "data/" + customer + "/outcome/top-products.csv"
-csv = open(csv_file, "a")
+csv_object = writer(open(csv_file, "a", newline=''))
 
 #Looking for source file
 files_path = "data\\" + customer + "\\*.json"
@@ -37,7 +37,7 @@ with open(source_file) as f:
 
 #File headers
 if os.path.getsize(csv_file) == 0:
-    csv.write("Date,Position,Product ID, Product Name, Recommendations, Clicks, Adds to Cart, Accepts\n")
+    csv_object.writerow(["Date","Position","Product ID", "Product Name", "Recommendations", "Clicks", "Adds to Cart", "Accepts"])
 
 #Retrieve number of products from JSON file
 with open(preferences_file) as f:
@@ -46,7 +46,13 @@ limit = limit["preferences"]["top-products"]["daily-amount"]
 
 parseJSON(data, limit)
 
-csv.close()
+#Remove the source file
+if os.path.isfile(source_file):
+    os.remove(source_file)
+    print("File was removed successfully")
+else:
+    print("Error removing " + str(source_file) + " file")
+
 
 print("Successful file update")
 
