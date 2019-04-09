@@ -11,28 +11,18 @@ preferences_file = "preferences.json"
 def parseJSON(data,limit):
     x = 0
     row = ""
-    for product in data['products']:
-        if (x<limit):
-            row += str(date.today().strftime("%m/%d/%y") + ",") 
-            #print("Date: " + date.today().strftime("%m/%d/%y"))
-            row += str(x+1) + ","
-            #print("Position: " + str(x+1))
-            row += str(product['productId']) + ","
-            #print(product['name'] + " (" + product['productId'] + ")")
-            row += str(product['name']) + ","
-            #print("Recommendations: " + str(product['productAnalytics']['day1']['recommendations']))
-            row += str(product['productAnalytics']['day1']['recommendations']) + ","
-            #print("Clicks: " + str(product['productAnalytics']['day1']['clicks']))
-            row += str(product['productAnalytics']['day1']['clicks']) + ","
-            #print("Adds to cart: " + str(product['productAnalytics']['day1']['cart']))
-            row += str(product['productAnalytics']['day1']['cart']) + ","
-            #print("Accepts: " + str(product['productAnalytics']['day1']['accepts']))
-            row += str(product['productAnalytics']['day1']['accepts']) + "\n"
-            #print(row)
-            csv.write(row)
-            row=""
-        x += 1
-        
+    for idx, product in enumerate(data['products'][:limit], start=1):
+        row += str(date.today().strftime("%m/%d/%y") + ",") 
+        row += str(idx) + ","
+        row += str(product['productId']) + ","
+        row += str(product['name']) + ","
+        row += str(product['productAnalytics']['day1']['recommendations']) + ","
+        row += str(product['productAnalytics']['day1']['clicks']) + ","
+        row += str(product['productAnalytics']['day1']['cart']) + ","
+        row += str(product['productAnalytics']['day1']['accepts']) + "\n"
+        csv.write(row)
+        row=""
+                
 csv_file = "data/" + customer + "/outcome/top-products.csv"
 csv = open(csv_file, "a")
 
